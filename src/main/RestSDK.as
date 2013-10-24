@@ -77,7 +77,8 @@ public class RestSDK implements RestInterface{
     public function getGroupsOfTeacher(callback:Function):void{
         var client:HttpClient = new HttpClient();
         var listener:HttpDataListener = new HttpDataListener();
-        var uri:URI = new URI("http://localhost:8080/api/groups");
+        //var uri:URI = new URI("http://localhost:8080/api/groups");
+        var uri:URI = new URI("https://tst-brightcenter.trifork.nl/api/groups");
         var request:HttpRequest = new Get();
         setAuthorizationHeader(request);
         var groupString:String;
@@ -110,7 +111,8 @@ public class RestSDK implements RestInterface{
      */
     public function createAssessmentResult(assessmentId:String, studentId:String, itemId:String, result:AssessmentItemResult):void {
         var client:HttpClient = new HttpClient();
-        var uri:URI = new URI("http://localhost:8080/api/assessment/"+assessmentId+"/student/"+studentId+"/assessmentItemResult/"+itemId);
+        //var uri:URI = new URI("http://localhost:8080/api/assessment/"+assessmentId+"/student/"+studentId+"/assessmentItemResult/"+itemId);
+        var uri:URI = new URI("https://tst-brightcenter.trifork.nl/api/assessment/"+assessmentId+"/student/"+studentId+"/assessmentItemResult/"+itemId);
 
         client.listener.onData = function(event:HttpDataEvent):void {
             // Notified with response content in event.bytes as it streams in
@@ -145,7 +147,8 @@ public class RestSDK implements RestInterface{
      */
     public function getUserDetails(callback:Function):User{
         var client:HttpClient = new HttpClient();
-        var uri:URI = new URI("http://localhost:8080/api/userDetails");
+        //var uri:URI = new URI("http://localhost:8080/api/userDetails");
+        var uri:URI = new URI("https://tst-brightcenter.trifork.nl/api/userDetails");
         var request:HttpRequest = new Get();
         setAuthorizationHeader(request);
         var userDetailsString:String;
@@ -218,6 +221,8 @@ public class RestSDK implements RestInterface{
         var client:HttpClient = new HttpClient();
         var listener:HttpDataListener = new HttpDataListener();
         var uri:URI = new URI("http://localhost:8080/api/assessment/"+assessmentId+"/students/"+studentId+"/assessmentItemResult");
+        var uri:URI = new URI("https://tst-brightcenter.trifork.nl/api/assessment/"+assessmentId+"/students/"+studentId+"/assessmentItemResult");
+        
         var request:HttpRequest = new Get();
         setAuthorizationHeader(request);
         var studentResultsString:String;
