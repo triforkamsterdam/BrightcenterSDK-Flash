@@ -27,6 +27,7 @@ Functions with a callback function as a parameter are returning values. To see h
 BrightCenterFlashSDK.as file.
 
 UPDATE
+
 To use a https connection the TLSEngine needs to be changed at line 694 from if (firstCert.getCommonName()==_otherIdentity) { to
 if (firstCert.getCommonName()==_otherIdentity || wildcardEq(firstCert.getCommonName(),_otherIdentity)) {
 and a new function needs to be inserted below
