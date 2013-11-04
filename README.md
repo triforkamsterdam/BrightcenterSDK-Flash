@@ -26,3 +26,16 @@ possible to call the interface. Currently the interface offers the following fun
 Functions with a callback function as a parameter are returning values. To see how to use them take a look in the
 BrightCenterFlashSDK.as file.
 
+UPDATE
+To use a https connection the TLSEngine needs to be changed at line 694 from if (firstCert.getCommonName()==_otherIdentity) { to
+if (firstCert.getCommonName()==_otherIdentity || wildcardEq(firstCert.getCommonName(),_otherIdentity)) {
+and a new function needs to be inserted below
+private function wildcardEq(certHostName:String, serverHostName:String):Boolean {
+                      if (certHostName.charAt(0)=="*"){
+                              var certArray:Array = certHostName.split(".");
+                              var serverArray:Array = serverHostName.split(".");
+                              return certArray[certArray.length-1]==serverArray[serverArray.length-1] && certArray[certArray.length]==serverArray[serverArray.length];
+                      }
+                      return false;
+                }
+
