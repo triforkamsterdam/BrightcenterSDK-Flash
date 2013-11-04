@@ -31,6 +31,7 @@ UPDATE
 To use a https connection the TLSEngine needs to be changed at line 694 from if (firstCert.getCommonName()==_otherIdentity) { to
 if (firstCert.getCommonName()==_otherIdentity || wildcardEq(firstCert.getCommonName(),_otherIdentity)) {
 and a new function needs to be inserted below
+
 private function wildcardEq(certHostName:String, serverHostName:String):Boolean {
                       if (certHostName.charAt(0)=="*"){
                               var certArray:Array = certHostName.split(".");
