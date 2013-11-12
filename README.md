@@ -26,9 +26,16 @@ possible to call the interface. Currently the interface offers the following fun
 Functions with a callback function as a parameter are returning values. To see how to use them take a look in the
 BrightCenterFlashSDK.as file.
 
+Dependencies
+
+To take use of the Flash SDK 2 libaries need to be added:
+
+- as3crypto
+- as3httpclientlib-1_0_6
+
 UPDATE
 
-To use a https connection the TLSEngine needs to be changed at line 694 from if (firstCert.getCommonName()==_otherIdentity) { to
+To use a https connection the TLSEngine in the libary of as3crypto needs to be changed at line 694 from if (firstCert.getCommonName()==_otherIdentity) { to
 if (firstCert.getCommonName()==_otherIdentity || wildcardEq(firstCert.getCommonName(),_otherIdentity)) {
 and a new function needs to be inserted below
 
@@ -41,3 +48,15 @@ private function wildcardEq(certHostName:String, serverHostName:String):Boolean 
                       return false;
                 }
 
+Also the DER.as file needs to be changed to support https. At line 153 insert the folowing the code snipped
+
+	// support for type 12
+                      case 0x0C: // V_ASN1_UTF8STRING
+	ps = new PrintableString(type, len);
+	ps.setString(der.readMultiByte(len, "utf-8"));
+	return ps;
+	// support for type 22
+	case 0x16: // V_ASN1_IA5STRING
+	ps = new PrintableString(type, len);
+	ps.setString(der.readMultiByte(len, "x-IA5"));
+	return ps;
