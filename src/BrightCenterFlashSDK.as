@@ -192,7 +192,6 @@ public class BrightCenterFlashSDK extends Sprite {
         return function(e:MouseEvent):void{
             trace("POST RESULT FOR STUDENT ID : " +id);
             var result:AssessmentItemResult = new AssessmentItemResult();
-            result.attempts = 4;
             result.duration = 70;
             result.score = 1;
             result.completionStatus = "COMPLETED";
