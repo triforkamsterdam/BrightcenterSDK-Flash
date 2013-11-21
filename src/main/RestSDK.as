@@ -137,36 +137,6 @@ public class RestSDK implements RestInterface{
         request.body = jsonData;  //variables;
         request.contentType = "application/json";
         client.request(uri, request);
-        createResultStatement(assessmentId, studentId, itemId, result);
-    }
-
-    private function createResultStatement(assessmentId:String, studentId:String, itemId:String, result:AssessmentItemResult):void {
-        var agent:String = "\"actor\" : { \"objectType\" : \"Agent\", \"name\" : \"" + studentId + "\", \"openid\" : \"" + studentId + "\" }";
-        var verb:String = " \"verb\" : { \"id\" : \"https://tst-brightcenter/xAPI/verbs/attended\" } ";
-        var object:String = "\"object\" : { \"objectType\" : \"Activity\" , \"id\" : \"https://tst-brightcenter/xAPI/" + assessmentId + "/" + itemId + "\" } ";
-        // if the result is bigger than one we can assume that the result is raw and set the score type on raw
-        var resultString:String;
-        if(result.score > 1 ){
-            var rawScore:String = "\"score\" : { \"raw\" : "+ result.score +"}";
-            if (result.completionStatus == "COMPLETED") {
-                resultString = "\"result\" : { "+rawScore+", \"success\" : true, \"completion\" : true, \"duration\" : " + result.duration + " } ";
-            } else {
-                resultString = "\"result\" : { "+rawScore+", \"success\" : false, \"completion\" : false, \"duration\" : " + result.duration + " } ";
-            }
-        }else{
-            var scaleScore:String = "\"score\" : { \"scaled\" : "+ result.score +"}";
-            if (result.completionStatus == "COMPLETED") {
-                resultString = "\"result\" : { "+scaleScore+", \"success\" : true, \"completion\" : true, \"duration\" : " + result.duration + " } ";
-            } else {
-                resultString = "\"result\" : { "+scaleScore+", \"success\" : false, \"completion\" : false, \"duration\" : " + result.duration + " } ";
-            }
-        }
-
-        var statementString:String = "{"+ agent + "," + verb + "," + object + ","+resultString+"}" ;
-        var statement:ByteArray = new ByteArray();
-        statement.writeUTFBytes(statementString);
-        statement.position = 0;
-        sendStatementToServer(statement);
     }
 
     /**
@@ -266,50 +236,12 @@ public class RestSDK implements RestInterface{
             studentResults = com.adobe.serialization.json.JSON.decode(studentResultsString);
             trace(studentResultsString);
             callback(studentResults);
-            // Create TinCan conform statement that a student launched an application
-            var openId:String = studentResults[0].studentId;
-            // the name of the agent is the student id the server will translate this id to the right name
-            var agent:String = "\"actor\": {\"objectType\":\"Agent\",\"name\":\"" + studentId + "\",\"openid\":\"" + openId + "\"}";
-            var verb:String = "\"verb\": {\"id\":\"https://tst-brightcenter/xAPI/verbs/launched\",\"display\":{\"nl-NL\":\"launched\"}}";
-            // the name of the application is translated by the server
-//           var object:String = "\"object\": { \"objectType\":\"Activity\", \"id\":\"http://localhost:8080/xAPI/assessmentId/"+assessmentId+"\", \"definition\": { " +
-//                   "\"name\": { \"nl-NL\" : \""+assessmentId+"\" } }, \"description\": { \"nl-NL\":\"Description needs be filled by the server\" } }";
-            var object:String = "\"object\": { \"objectType\":\"Activity\", \"id\":\"https://tst-brightcenter/xAPI/assessmentId/" + assessmentId + "\", \"definition\": { " +
-                    "\"name\": { \"nl-NL\" : \"" + assessmentId + "\" } } }";
-            var jsonString:String = "{" + agent + "," + verb + "," + object + "}";
-            var statement:ByteArray = new ByteArray();
-            statement.writeUTFBytes(jsonString);
-            statement.position = 0;
-            sendStatementToServer(statement);
         };
 
         client.listener.onError = function (event:ErrorEvent):void {
             var errorMessage:String = event.message;
         };
 
-        client.request(uri, request);
-    }
-
-    private function sendStatementToServer(statement:ByteArray):void {
-        var client:HttpClient = new HttpClient();
-        var uri:URI = new URI("https://tst-brightcenter.trifork.nl/xAPI/statements");
-
-        client.listener.onData = function (event:HttpDataEvent):void {
-            // Notified with response content in event.bytes as it streams in
-        };
-
-        client.listener.onComplete = function (event:HttpResponseEvent):void {
-            // Notified when complete (after status and data)
-        };
-
-        var request:HttpRequest = new Put();
-        var userCredentials:Credentials = getCredentials();
-        var cred:String = userCredentials.getUsername() + ":" + userCredentials.getPassword();
-        cred = Base64.encode(cred);
-        request.addHeader("Authorization", "Basic " + cred);
-
-        request.body = statement; 
-        request.contentType = "application/json";
         client.request(uri, request);
     }
 
