@@ -129,7 +129,7 @@ public class RestSDK implements RestInterface{
         cred = Base64.encode(cred);
         request.addHeader("Authorization", "Basic " + cred);
         var completionStatus:String = result.completionStatus;
-        var json:String = "{\"attempts\":" + result.attempts + ", \"duration\":" + result.duration + ", \"score\":" + result.score + ", \"completionStatus\":\"" + completionStatus + "\"}";
+        var json:String = "{\"duration\":" + result.duration + ", \"score\":" + result.score + ", \"completionStatus\":\"" + completionStatus + "\"}";
         var jsonData:ByteArray = new ByteArray();
         jsonData.writeUTFBytes(json);
         jsonData.position = 0;
