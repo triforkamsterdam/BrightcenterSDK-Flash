@@ -39,7 +39,7 @@ To use a https connection the TLSEngine in the libary of as3crypto needs to be c
 `if (firstCert.getCommonName()==_otherIdentity || wildcardEq(firstCert.getCommonName(),_otherIdentity)) {`
 and a new function needs to be inserted below
 
-```flash
+```ActionScript
 private function wildcardEq(certHostName:String, serverHostName:String):Boolean {
                       if (certHostName.charAt(0)=="*"){
                               var certArray:Array = certHostName.split(".");
