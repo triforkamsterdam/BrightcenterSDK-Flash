@@ -23,8 +23,8 @@ import interfaces.RestInterface;
 
 import main.RestSDK;
 
-// This is an example class how the BrightCenter SDK can be used
-public class BrightCenterFlashSDK extends Sprite {
+// This is an example class how the Brightcenter SDK can be used
+public class BrightcenterFlashSDK extends Sprite {
     var restService:RestInterface = new RestSDK();
 
     public var username:TextField = new TextField();
@@ -38,7 +38,7 @@ public class BrightCenterFlashSDK extends Sprite {
 
     var user:User;
 
-    public function BrightCenterFlashSDK() {
+    public function BrightcenterFlashSDK() {
         paintLoginScreen();
     }
 
