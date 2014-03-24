@@ -50,7 +50,7 @@ public class RestSDK implements RestInterface{
     var credentials:Credentials;
     var user:User;
 
-    private var serverURL:String = "https://nightly-brightcenter.trifork.nl/";
+    private var serverURL:String = "http://www.brightcenter.nl/dashboard/api/";
     private var sandboxURL:String = "http://localhost:8080/"
 
     public function RestSDK() {
